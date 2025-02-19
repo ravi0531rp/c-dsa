@@ -13,29 +13,31 @@ You want to determine if there is a valid path that exists from vertex source to
 Given edges and the integers n, source, and destination, 
 return true if there is a valid path from source to destination, or false otherwise.
 """
-from collections import defaultdict
+from collections import deque, defaultdict
 from typing import List
+
 class Solution:
     def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
         if source == destination:
             return True
-        graph = defaultdict(list)
 
-        for u,v in edges:
+        graph = defaultdict(list)
+        for u, v in edges:
             graph[u].append(v)
             graph[v].append(u)
 
-        seen = set()
-        seen.add(source)
-        
-        def dfs(node):
+        queue = deque([source])
+        visited = set([source])
+
+        while queue:
+            node = queue.popleft()
+
             if node == destination:
-                return True
-            for neighbour in graph.get(node):
-                if neighbour not in seen:
-                    seen.add(neighbour)
-                    if dfs(neighbour):
-                        return True
-                    
-            return False
-        return dfs(source)
+                return True  
+
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+        return False  
