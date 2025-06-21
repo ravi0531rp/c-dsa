@@ -39,3 +39,25 @@ class Solution:
             
             i += 1
         return max_len
+
+
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        nums = set(nums)
+        max_len = 0
+
+        for num in nums:
+            if num - 1 not in nums:
+                next_elem = num + 1
+                curr_len = 1
+
+                while next_elem in nums:
+                    curr_len += 1
+                    next_elem += 1
+                max_len = max(max_len, curr_len)
+        return max_len
+
+
+
+
+
