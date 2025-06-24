@@ -9,23 +9,27 @@ Note: You may not engage in multiple transactions simultaneously (i.e., you must
 
 
 """
-from typing import List
 class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
+    def maxProfit(self, stocks):
         dp = {}
+        BUYING = 1
+        SELLING = 0
 
-        def dfs(idx, buying):
-            if idx >= len(prices):
+        def dfs(index, state):
+            if index == len(stocks):
                 return 0
-            if (idx, buying) in dp:
-                return dp[(idx, buying)]
-            
-            cooldown = dfs(idx + 1, buying)
-            if buying:
-                buy = dfs(idx + 1, False) - prices[idx]
-                dp[(idx, buying)] = max(buy, cooldown)
+            if (index, state) in dp:
+                return dp[(index,dp)]
+
+            if state == BUYING:
+                buying_profit = dfs(index+1, SELLING) - stocks[index]
+                cooldown_profit = dfs(index+1, BUYING)
+                dp[(index, state)] = max(buying_profit, cooldown_profit)
             else:
-                sell = dfs(idx + 2, True) + prices[idx]
-                dp[(idx, buying)] = max(sell, cooldown)
-            return dp[(idx, buying)]
-        return dfs(0, True)
+                selling_profit = dfs(index+2, BUYING) + stocks[index]
+                cooldown_profit = dfs(index+1, BUYING) 
+                dp[(index, state)] = max(selling_profit, cooldown_profit)
+            return dp[(index, state)]
+        return dfs(0, BUYING)
+
+        
