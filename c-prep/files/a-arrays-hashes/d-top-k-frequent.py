@@ -23,21 +23,26 @@ It is guaranteed that the answer is unique.
 
 """
 from typing import List
+from collections import defaultdict
+
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        buckets = [[] for i in range(0, len(nums) + 1)]
-
+        # Step 1: Count frequencies
         counts = {}
         for num in nums:
             counts[num] = counts.get(num, 0) + 1
         
-        for elem, count in counts.items():
-            buckets[count].append(elem)
-
+        # Step 2: Group numbers by frequency using defaultdict
+        buckets = defaultdict(list)
+        for num, freq in counts.items():
+            buckets[freq].append(num)
+        
+        # Step 3: Collect top k frequent elements, starting from highest frequency
         res = []
-        for idx in range(len(buckets) - 1, 0, -1):
-            for val in buckets[idx]:
-                res.append(val)
-                if len(res) == k:
-                    return res
+        for freq in range(len(nums), 0, -1):
+            if freq in buckets:
+                res.extend(buckets[freq])
+                if len(res) >= k:
+                    return res[:k]
+
         
