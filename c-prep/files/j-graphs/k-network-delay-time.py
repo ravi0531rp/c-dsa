@@ -1,3 +1,9 @@
+"""
+Time	O((n + E) × log n)
+Space	O(n + E)
+
+"""
+
 from collections import defaultdict
 from heapq import heappop, heappush
 class Solution:
