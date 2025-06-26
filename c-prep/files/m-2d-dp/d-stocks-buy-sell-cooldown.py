@@ -19,7 +19,7 @@ class Solution:
             if index == len(stocks):
                 return 0
             if (index, state) in dp:
-                return dp[(index,dp)]
+                return dp[(index,state)]
 
             if state == BUYING:
                 buying_profit = dfs(index+1, SELLING) - stocks[index]
