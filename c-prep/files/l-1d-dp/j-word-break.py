@@ -26,13 +26,21 @@ from typing import List
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        dp = [False] * (len(s) + 1)
-        dp[len(s)] = True
+        n = len(s)
 
-        for idx in range(len(s) -1, -1, -1):
+        dp = [False] * (n + 1)
+        dp[0] = True
+
+        for i in range(n):
+
+            # If this position is unreachable, skip
+            if not dp[i]:
+                continue
+
             for word in wordDict:
-                if idx + len(word) <= len(s) and s[idx : idx + len(word)] == word:
-                    dp[idx] = dp[idx + len(word)]
-                if dp[idx]:
-                    break
-        return dp[0]
+                end = i + len(word)
+
+                if end <= n and s[i:end] == word:
+                    dp[end] = True
+
+        return dp[n]
