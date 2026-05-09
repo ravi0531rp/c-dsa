@@ -27,7 +27,7 @@ class Solution:
                 dp[(index, state)] = max(buying_profit, cooldown_profit)
             else:
                 selling_profit = dfs(index+2, BUYING) + stocks[index]
-                cooldown_profit = dfs(index+1, BUYING) 
+                cooldown_profit = dfs(index+1, SELLING) 
                 dp[(index, state)] = max(selling_profit, cooldown_profit)
             return dp[(index, state)]
         return dfs(0, BUYING)
