@@ -11,25 +11,44 @@ Note: You may not engage in multiple transactions simultaneously (i.e., you must
 """
 class Solution:
     def maxProfit(self, stocks):
+
         dp = {}
+
         BUYING = 1
         SELLING = 0
 
         def dfs(index, state):
-            if index == len(stocks):
+
+            if index >= len(stocks):
                 return 0
+
             if (index, state) in dp:
-                return dp[(index,state)]
+                return dp[(index, state)]
 
             if state == BUYING:
-                buying_profit = dfs(index+1, SELLING) - stocks[index]
-                cooldown_profit = dfs(index+1, BUYING)
-                dp[(index, state)] = max(buying_profit, cooldown_profit)
+
+                buying_profit = dfs(index + 1, SELLING) - stocks[index]
+
+                cooldown_profit = dfs(index + 1, BUYING)
+
+                dp[(index, state)] = max(
+                    buying_profit,
+                    cooldown_profit
+                )
+
             else:
-                selling_profit = dfs(index+2, BUYING) + stocks[index]
-                cooldown_profit = dfs(index+1, SELLING) 
-                dp[(index, state)] = max(selling_profit, cooldown_profit)
+
+                selling_profit = dfs(index + 2, BUYING) + stocks[index]
+
+                cooldown_profit = dfs(index + 1, SELLING)
+
+                dp[(index, state)] = max(
+                    selling_profit,
+                    cooldown_profit
+                )
+
             return dp[(index, state)]
+
         return dfs(0, BUYING)
 
         
